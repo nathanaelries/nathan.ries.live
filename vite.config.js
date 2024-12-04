@@ -9,5 +9,15 @@ export default defineConfig({
       allow: ['..'],
       strict: false
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['react', 'react-dom', 'react-router-dom'],
+          'markdown': ['react-markdown', 'remark-gfm', 'gray-matter']
+        }
+      }
+    }
   }
 });

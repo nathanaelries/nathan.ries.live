@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useNavigation } from '../../hooks/useNavigation';
 import { useScrollToHash } from '../../hooks/useScrollToHash';
 import MobileMenu from './MobileMenu';
 
 function NavLinks() {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
+  const { handleNavigation } = useNavigation();
   useScrollToHash();
 
   const links = [
@@ -16,24 +17,6 @@ function NavLinks() {
     { to: '/#skills', text: 'Skills' },
     { to: '/#contact', text: 'Contact' }
   ];
-
-  const handleNavigation = (e, to) => {
-    if (to.startsWith('/#')) {
-      e.preventDefault();
-      
-      // If we're not on the home page, navigate there first
-      if (location.pathname !== '/') {
-        window.location.href = to;
-        return;
-      }
-
-      const element = document.querySelector(to.substring(1));
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-    setIsOpen(false);
-  };
 
   return (
     <>

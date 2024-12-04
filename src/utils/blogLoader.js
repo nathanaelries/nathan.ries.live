@@ -18,7 +18,7 @@ export async function loadBlogPost(slug) {
     };
   } catch (error) {
     console.error(`Error loading blog post ${slug}:`, error);
-    return null;
+    throw error;
   }
 }
 
@@ -35,6 +35,6 @@ export async function loadBlogPosts() {
     }));
   } catch (error) {
     console.error('Error loading blog posts:', error);
-    return [];
+    throw error;
   }
 }

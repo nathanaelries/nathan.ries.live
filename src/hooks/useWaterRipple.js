@@ -4,19 +4,16 @@ import 'jquery.ripples';
 
 export function useWaterRipple(selector) {
   useEffect(() => {
-    const element = $(selector);
-    
     try {
-      // Initialize ripple effect
-      element.ripples({
+      $(selector).ripples({
         resolution: 512,
         dropRadius: 20,
         perturbance: 0.04,
         interactive: true
       });
 
-      // Cleanup function
       return () => {
+        const element = $(selector);
         if (element.data('ripples')) {
           element.ripples('destroy');
         }
@@ -24,5 +21,5 @@ export function useWaterRipple(selector) {
     } catch (e) {
       console.error('jQuery Ripples plugin error:', e);
     }
-  }, []); // Empty dependency array means this only runs once on mount
+  }, [selector]);
 }

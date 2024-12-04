@@ -3,7 +3,7 @@ import BlogList from '../components/blog/BlogList';
 import BlogListHeader from '../components/blog/BlogListHeader';
 import LoadingState from '../components/common/LoadingState';
 import ErrorState from '../components/common/ErrorState';
-import useBlogPosts from '../hooks/useBlogPosts';
+import { useBlogPosts } from '../hooks/useBlogPosts';
 
 function Blog() {
   const { posts, loading, error } = useBlogPosts();
