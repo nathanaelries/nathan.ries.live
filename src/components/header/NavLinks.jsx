@@ -1,35 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useScrollToHash } from '../../hooks/useScrollToHash';
 import MobileMenu from './MobileMenu';
 
 function NavLinks() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  useScrollToHash();
 
   const links = [
-    { to: '/', text: 'Nathanael Ries', className: 'md:hidden' }, // Only show in mobile menu
     { to: '/', text: 'Home' },
-    { to: '/articles', text: 'Notebook' },
+    { to: '/about', text: 'About Me' },
+    { to: '/blog', text: 'Notebook' },
     { to: '/#experience', text: 'Experience' },
     { to: '/#skills', text: 'Skills' },
     { to: '/#contact', text: 'Contact' }
   ];
 
-  useEffect(() => {
-    // Handle hash navigation when the page loads
-    if (location.hash) {
-      const element = document.querySelector(location.hash);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  }, [location]);
-
   const handleNavigation = (e, to) => {
-    if (to === '/' && location.pathname === '/') {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (to.startsWith('/#')) {
+    if (to.startsWith('/#')) {
       e.preventDefault();
       
       // If we're not on the home page, navigate there first
@@ -50,7 +39,7 @@ function NavLinks() {
     <>
       {/* Desktop Navigation */}
       <div className="hidden md:flex items-center space-x-8">
-        {links.filter(link => !link.className?.includes('md:hidden')).map(link => (
+        {links.map(link => (
           <Link
             key={link.to}
             to={link.to}

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ArticleList from '../components/articles/ArticleList';
+import BlogList from '../components/blog/BlogList';
+import BlogListHeader from '../components/blog/BlogListHeader';
+import LoadingState from '../components/common/LoadingState';
 import { loadArticleList } from '../utils/markdownLoader';
 
 function Articles() {
@@ -15,7 +17,18 @@ function Articles() {
     fetchArticles();
   }, []);
 
-  return <ArticleList articles={articles} loading={loading} />;
+  if (loading) {
+    return <LoadingState />;
+  }
+
+  return (
+    <div className="py-12 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <BlogListHeader />
+        <BlogList posts={articles} />
+      </div>
+    </div>
+  );
 }
 
 export default Articles;

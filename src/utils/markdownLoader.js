@@ -1,29 +1,9 @@
-import matter from 'gray-matter';
+import { loadContent, loadContentList } from './contentLoader';
 
 export async function loadArticle(slug) {
-  try {
-    const response = await fetch(`/articles/${slug}.md`);
-    const markdown = await response.text();
-    const { data, content } = matter(markdown);
-    
-    return {
-      ...data,
-      content,
-      slug
-    };
-  } catch (error) {
-    console.error(`Error loading article ${slug}:`, error);
-    return null;
-  }
+  return loadContent('articles', slug);
 }
 
 export async function loadArticleList() {
-  try {
-    const response = await fetch('/articles/index.json');
-    const articles = await response.json();
-    return articles;
-  } catch (error) {
-    console.error('Error loading article list:', error);
-    return [];
-  }
+  return loadContentList('articles');
 }

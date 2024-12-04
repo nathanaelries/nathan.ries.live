@@ -3,5 +3,11 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  assetsInclude: ['**/*.glsl']
+  assetsInclude: ['**/*.md'],
+  server: {
+    fs: {
+      allow: ['..'],
+      strict: false
+    }
+  }
 });

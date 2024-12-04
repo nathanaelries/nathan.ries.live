@@ -1,43 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BlogPost from '../components/blog/BlogPost';
-import { loadArticle } from '../utils/markdownLoader';
+import { loadBlogPost } from '../utils/blogLoader';
 import LoadingState from '../components/common/LoadingState';
 import ErrorState from '../components/common/ErrorState';
 
-function Article() {
+function BlogPostPage() {
   const { slug } = useParams();
-  const [article, setArticle] = useState(null);
+  const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchArticle() {
+    async function fetchPost() {
       try {
-        const articleData = await loadArticle(slug);
-        if (!articleData) {
-          throw new Error('Article not found');
+        const postData = await loadBlogPost(slug);
+        if (!postData) {
+          throw new Error('Post not found');
         }
-        setArticle(articleData);
+        setPost(postData);
       } catch (err) {
-        console.error('Error loading article:', err);
-        setError('Article not found');
+        console.error('Error loading post:', err);
+        setError('Post not found');
       } finally {
         setLoading(false);
       }
     }
-    fetchArticle();
+    fetchPost();
   }, [slug]);
 
   if (loading) {
     return <LoadingState />;
   }
 
-  if (error || !article) {
-    return <ErrorState message={error || 'Article not found'} />;
+  if (error || !post) {
+    return <ErrorState message={error || 'Post not found'} />;
   }
 
-  return <BlogPost post={article} />;
+  return <BlogPost post={post} />;
 }
 
-export default Article;
+export default BlogPostPage;

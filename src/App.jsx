@@ -1,28 +1,21 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
-import Articles from './pages/Articles';
-import Article from './pages/Article';
-import WaterRipple from './components/effects/WaterRipple';
+import About from './pages/About';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 
 function App() {
   return (
-    <div className="min-h-screen bg-transparent relative">
-      <WaterRipple />
-      <div className="relative flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/articles" element={<Articles />} />
-            <Route path="/articles/:slug" element={<Article />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </div>
+    <MainLayout>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
+      </Routes>
+    </MainLayout>
   );
 }
 

@@ -2,8 +2,11 @@ import React from 'react';
 import HeroContent from './hero/HeroContent';
 import HeroButton from './hero/HeroButton';
 import HeroImage from './hero/HeroImage';
+import { useWaterRipple } from '../hooks/useWaterRipple';
 
 function Hero() {
+  useWaterRipple('.hero-section');
+
   return (
     <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden hero-section">
       <div className="max-w-7xl mx-auto">
