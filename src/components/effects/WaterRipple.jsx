@@ -1,44 +1,39 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import $ from 'jquery';
 import 'jquery.ripples';
 
 function WaterRipple() {
-  const containerRef = useRef(null);
-
   useEffect(() => {
-    const $container = $(containerRef.current);
+    const $hero = $('.hero-section');
     
     try {
-      $container.ripples({
+      $hero.ripples({
         resolution: 512,
         dropRadius: 20,
-        perturbance: 0.08,
+        perturbance: 0.04,
+        imageUrl: null,
         interactive: true,
         crossOrigin: ''
       });
 
-      // Create periodic ripples
-      const createRipple = () => {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        const x = Math.random() * width;
-        const y = Math.random() * height;
-        $container.ripples('drop', x, y, 20, 0.08);
-      };
+      // Create ripple effect every few seconds
+      const interval = setInterval(() => {
+        const x = Math.random() * $hero.outerWidth();
+        const y = Math.random() * $hero.outerHeight();
+        const dropRadius = 20;
+        const strength = 0.04 + Math.random() * 0.04;
 
-      // Create initial ripples
-      createRipple();
-      
-      // Create periodic ripples
-      const interval = setInterval(createRipple, 3000);
+        $hero.ripples('drop', x, y, dropRadius, strength);
+      }, 3000);
 
       // Handle window resize
       const handleResize = () => {
-        $container.ripples('destroy');
-        $container.ripples({
+        $hero.ripples('destroy');
+        $hero.ripples({
           resolution: 512,
           dropRadius: 20,
-          perturbance: 0.08,
+          perturbance: 0.04,
+          imageUrl: null,
           interactive: true,
           crossOrigin: ''
         });
@@ -48,25 +43,16 @@ function WaterRipple() {
 
       // Cleanup
       return () => {
-        clearInterval(interval);
         window.removeEventListener('resize', handleResize);
-        $container.ripples('destroy');
+        clearInterval(interval);
+        $hero.ripples('destroy');
       };
     } catch (e) {
       console.error(e);
     }
   }, []);
 
-  return (
-    <div
-      ref={containerRef}
-      className="fixed inset-0 w-full h-full pointer-events-auto"
-      style={{
-        background: 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)',
-        zIndex: 0
-      }}
-    />
-  );
+  return null;
 }
 
 export default WaterRipple;

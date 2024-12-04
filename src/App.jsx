@@ -9,7 +9,7 @@ import WaterRipple from './components/effects/WaterRipple';
 
 function App() {
   return (
-    <div className="min-h-screen bg-transparent">
+    <div className="min-h-screen bg-transparent relative">
       <WaterRipple />
       <div className="relative flex flex-col min-h-screen">
         <Header />
