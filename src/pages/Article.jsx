@@ -1,29 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getArticleBySlug } from '../data/articles';
+import { loadArticle } from '../utils/markdownLoader';
+import ArticleContent from '../components/articles/ArticleContent';
+import ArticleHeader from '../components/articles/ArticleHeader';
+import LoadingState from '../components/common/LoadingState';
+import ErrorState from '../components/common/ErrorState';
 
 function Article() {
   const { slug } = useParams();
-  const article = getArticleBySlug(slug);
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchArticle() {
+      const articleData = await loadArticle(slug);
+      setArticle(articleData);
+      setLoading(false);
+    }
+    fetchArticle();
+  }, [slug]);
+
+  if (loading) {
+    return <LoadingState />;
+  }
 
   if (!article) {
-    return (
-      <div className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900">Article not found</h1>
-        </div>
-      </div>
-    );
+    return <ErrorState message="Article not found" />;
   }
 
   return (
     <div className="py-12 bg-white">
-      <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-indigo">
-        <h1>{article.title}</h1>
-        <div className="text-gray-500 mb-8">
-          Published on {new Date(article.date).toLocaleDateString()}
-        </div>
-        <div dangerouslySetInnerHTML={{ __html: article.content }} />
+      <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ArticleHeader article={article} />
+        <ArticleContent content={article.content} />
       </article>
     </div>
   );

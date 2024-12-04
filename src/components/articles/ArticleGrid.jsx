@@ -1,8 +1,7 @@
 import React from 'react';
 import ArticleCard from './ArticleCard';
-import { articles } from '../../data/articles';
 
-function ArticleGrid() {
+function ArticleGrid({ articles }) {
   return (
     <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {articles.map((article) => (

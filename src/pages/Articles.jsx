@@ -1,19 +1,21 @@
-import React from 'react';
-import ArticleGrid from '../components/articles/ArticleGrid';
-import SectionTitle from '../components/common/SectionTitle';
+import React, { useState, useEffect } from 'react';
+import ArticleList from '../components/articles/ArticleList';
+import { loadArticleList } from '../utils/markdownLoader';
 
 function Articles() {
-  return (
-    <div className="py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionTitle>Notebook</SectionTitle>
-        <p className="mt-4 text-lg text-gray-500">
-          Explore my collection of articles on DevOps, system administration, and technology.
-        </p>
-        <ArticleGrid />
-      </div>
-    </div>
-  );
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchArticles() {
+      const articleList = await loadArticleList();
+      setArticles(articleList);
+      setLoading(false);
+    }
+    fetchArticles();
+  }, []);
+
+  return <ArticleList articles={articles} loading={loading} />;
 }
 
 export default Articles;
