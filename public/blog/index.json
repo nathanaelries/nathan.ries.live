@@ -5,5 +5,12 @@
     "date": "2023-09-15",
     "image": "/images/blog/devops.jpg",
     "excerpt": "Learn the fundamental principles and practices of DevOps engineering."
+  },
+    {
+    "slug": "leveraging-ai-tools-to-enhance-devops-practices",
+    "title": "Leveraging AI Tools to Enhance DevOps Practices",
+    "date": "2024-10-24",
+    "image": "/images/blog/devopsai.jpg",
+    "excerpt": "Leverage AI in DevOps effectively and responsibly."
   }
 ]
