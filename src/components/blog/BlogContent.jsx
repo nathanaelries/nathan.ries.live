@@ -18,6 +18,7 @@ function BlogContent({ content }) {
           ul: ({node, ...props}) => <ul className="list-disc pl-6 mb-4" {...props} />,
           ol: ({node, ...props}) => <ol className="list-decimal pl-6 mb-4" {...props} />,
           li: ({node, ...props}) => <li className="mb-2" {...props} />,
+          hr: ({node, ...props}) => <hr className="my-8 border-gray-200" {...props} />,
           a: ({node, ...props}) => (
             <a 
               {...props} 

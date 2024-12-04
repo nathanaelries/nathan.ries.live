@@ -10,12 +10,17 @@ export default defineConfig({
       strict: false
     }
   },
+  resolve: {
+    alias: {
+      '@': '/src'
+    }
+  },
   build: {
     rollupOptions: {
       output: {
         manualChunks: {
           'vendor': ['react', 'react-dom', 'react-router-dom'],
-          'markdown': ['react-markdown', 'remark-gfm', 'gray-matter']
+          'markdown': ['react-markdown', 'remark-gfm']
         }
       }
     }

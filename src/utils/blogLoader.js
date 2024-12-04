@@ -1,4 +1,4 @@
-import matter from 'gray-matter';
+import frontMatter from 'front-matter';
 
 export async function loadBlogPost(slug) {
   try {
@@ -6,14 +6,14 @@ export async function loadBlogPost(slug) {
     if (!response.ok) {
       throw new Error('Post not found');
     }
-    const markdown = await response.text();
-    const { data, content } = matter(markdown);
+    const text = await response.text();
+    const { attributes, body } = frontMatter(text);
     
     return {
-      ...data,
-      content,
+      ...attributes,
+      content: body,
       slug,
-      readTime: Math.ceil(content.split(' ').length / 200),
+      readTime: Math.ceil(body.split(' ').length / 200),
       author: 'Nathanael Ries'
     };
   } catch (error) {

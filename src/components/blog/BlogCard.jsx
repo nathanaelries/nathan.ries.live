@@ -8,11 +8,13 @@ function BlogCard({ post }) {
       className="block group"
     >
       <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-        <img
-          src={post.image}
-          alt={post.title}
-          className="w-full h-48 object-cover"
-        />
+        {post.image && (
+          <img
+            src={post.image}
+            alt={post.title}
+            className="w-full h-48 object-cover"
+          />
+        )}
         <div className="p-6">
           <h3 className="text-xl font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors duration-300">
             {post.title}
