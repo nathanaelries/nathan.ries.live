@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaGithub, FaYoutube, FaXTwitter } from 'react-icons/fa6';
 import { SiRumble } from 'react-icons/si';
+import TruthSocialIcon from '../icons/TruthSocialIcon';
 
 function SocialLinks() {
   const socialLinks = [
@@ -15,14 +16,19 @@ function SocialLinks() {
       label: 'YouTube'
     },
     {
-      href: 'https://rumble.com/c/nathanaelries',
+      href: 'https://rumble.com/c/c-7075805',
       icon: SiRumble,
       label: 'Rumble'
     },
     {
-      href: 'https://x.com/nathanaelries',
+      href: 'https://x.com/nathanaelr95036',
       icon: FaXTwitter,
       label: 'X (Twitter)'
+    },
+    {
+      href: 'https://truthsocial.com/@nathanaelries',
+      icon: TruthSocialIcon,
+      label: 'Truth Social'
     }
   ];
 
