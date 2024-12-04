@@ -3,6 +3,11 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Link } from 'react-router-dom';
 
 function MobileMenu({ isOpen, setIsOpen, links, onLinkClick }) {
+  const handleLinkClick = (e, to) => {
+    setIsOpen(false); // Close menu first
+    onLinkClick(e, to); // Then handle navigation
+  };
+
   return (
     <Transition show={isOpen} as={Fragment}>
       <Dialog
@@ -52,7 +57,7 @@ function MobileMenu({ isOpen, setIsOpen, links, onLinkClick }) {
                   <Link
                     key={link.to}
                     to={link.to}
-                    onClick={(e) => onLinkClick(e, link.to)}
+                    onClick={(e) => handleLinkClick(e, link.to)}
                     className="text-gray-600 hover:text-gray-900 transition-colors duration-300 py-2"
                   >
                     {link.text}
