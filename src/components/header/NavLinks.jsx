@@ -7,6 +7,7 @@ function NavLinks() {
   const location = useLocation();
 
   const links = [
+    { to: '/', text: 'Nathanael Ries', className: 'md:hidden' }, // Only show in mobile menu
     { to: '/', text: 'Home' },
     { to: '/articles', text: 'Notebook' },
     { to: '/#experience', text: 'Experience' },
@@ -25,7 +26,10 @@ function NavLinks() {
   }, [location]);
 
   const handleNavigation = (e, to) => {
-    if (to.startsWith('/#')) {
+    if (to === '/' && location.pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (to.startsWith('/#')) {
       e.preventDefault();
       
       // If we're not on the home page, navigate there first
@@ -46,7 +50,7 @@ function NavLinks() {
     <>
       {/* Desktop Navigation */}
       <div className="hidden md:flex items-center space-x-8">
-        {links.map(link => (
+        {links.filter(link => !link.className?.includes('md:hidden')).map(link => (
           <Link
             key={link.to}
             to={link.to}
