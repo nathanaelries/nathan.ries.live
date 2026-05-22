@@ -42,6 +42,7 @@ jobs:
           npm run build
 
       - name: Open pull request if blocklist changed
+        id: create-pr
         uses: peter-evans/create-pull-request@v6
         with:
           commit-message: 'chore: refresh disposable email blocklist'
@@ -50,15 +51,27 @@ jobs:
             Automated refresh of `src/data/disposable-email-domains.js` from upstream
             [disposable-email-domains/disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains).
 
-            **Before merging**, glance at the diff:
-            - Large net additions are normal as upstream grows.
-            - Large net removals or unexpected legit-looking domains being added are worth investigating.
-            - Astro build passed in CI, so the file is at least syntactically valid.
+            **Auto-merge is enabled.** This PR will squash-merge automatically once
+            CI passes. The Astro build already ran successfully before this PR was
+            created, so unless you've added branch protection rules with extra
+            required checks, the merge fires immediately.
 
-            If anything looks off, close this PR and the next run will recreate it.
+            If anything looks off, disable auto-merge or close the PR — the next
+            scheduled run will recreate it from current upstream.
           branch: chore/refresh-disposable-blocklist
           base: main
           delete-branch: true
           labels: |
             automated
             dependencies
+
+      - name: Enable auto-merge on the PR
+        if: steps.create-pr.outputs.pull-request-number
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge \
+            --auto \
+            --squash \
+            --repo "${{ github.repository }}" \
+            "${{ steps.create-pr.outputs.pull-request-number }}"
