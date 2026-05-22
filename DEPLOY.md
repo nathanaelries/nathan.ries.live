@@ -145,6 +145,16 @@ DNS records:
 - Apex `ries.live`: `A` record to `75.2.60.5` (Netlify load balancer), or use Netlify DNS.
 - Optional `www`: `CNAME` to `<site-name>.netlify.app`.
 
+### Primary domain
+
+`ries.live` is set as the **Primary domain** in the Netlify dashboard
+(Domain management → ries.live → Options → "Set as primary domain"). All
+other domain aliases (e.g., `nathan.ries.live`) auto-301-redirect to it.
+
+This setting lives in the Netlify dashboard, not in `netlify.toml`, because
+Netlify needs it to provision SSL certs correctly. If the site is ever
+recreated from scratch, re-apply it after initial setup.
+
 ## Local development
 
 ```powershell
