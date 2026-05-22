@@ -14,8 +14,6 @@
     "@tailwindcss/typography": "^0.5.10",
     "framer-motion": "^10.16.4",
     "front-matter": "^4.0.2",
-    "jquery": "^3.7.1",
-    "jquery.ripples": "^0.6.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",

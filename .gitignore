@@ -1,0 +1,19 @@
+# Dependencies
+node_modules
+
+# Build output (Netlify rebuilds on deploy)
+dist
+
+# Editor / tooling working directories
+.claude
+.vscode
+.idea
+.DS_Store
+
+# Tailored résumé PDFs at repo root (only public/ versions get published)
+/*.pdf
+
+# Local env
+.env
+.env.local
+.env.*.local

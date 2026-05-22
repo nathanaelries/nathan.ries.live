@@ -11,10 +11,11 @@ function NavLinks() {
 
   const links = [
     { to: '/', text: 'Home' },
-    { to: '/about', text: 'About Me' },
-    { to: '/blog', text: 'Notebook' },
     { to: '/#experience', text: 'Experience' },
+    { to: '/#projects', text: 'Projects' },
     { to: '/#skills', text: 'Skills' },
+    { to: '/about', text: 'About' },
+    { to: '/blog', text: 'Notebook' },
     { to: '/#contact', text: 'Contact' }
   ];
 
