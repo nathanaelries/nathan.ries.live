@@ -23,20 +23,17 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Fetch upstream blocklist + allowlist
+      - name: Fetch upstream blocklist
         run: |
           set -euo pipefail
           UPSTREAM="https://raw.githubusercontent.com/disposable-email-domains/disposable-email-domains/main"
           curl -fsSL "$UPSTREAM/disposable_email_blocklist.conf" -o /tmp/blocklist.conf
-          curl -fsSL "$UPSTREAM/allowlist.conf" -o /tmp/allowlist.conf
           echo "Fetched $(wc -l < /tmp/blocklist.conf) blocklist lines"
-          echo "Fetched $(wc -l < /tmp/allowlist.conf) allowlist lines"
 
       - name: Regenerate src/data/disposable-email-domains.js
         run: |
           node scripts/build-disposable-list.mjs \
             /tmp/blocklist.conf \
-            /tmp/allowlist.conf \
             src/data/disposable-email-domains.js
 
       - name: Verify Astro build still passes with new list
