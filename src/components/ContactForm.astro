@@ -1,0 +1,164 @@
+---
+const turnstileSiteKey = '0x4AAAAAADUe1taqoFTlKWXd';
+---
+
+<form
+  id="contact-form"
+  name="contact"
+  method="POST"
+  action="/api/contact"
+  class="space-y-4"
+  novalidate
+>
+  <input type="hidden" name="form-name" value="contact" />
+  <p class="hidden" aria-hidden="true">
+    <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+  </p>
+
+  <noscript>
+    <p class="text-sm text-red-700 bg-red-50 border border-red-200 rounded p-3">
+      This form needs JavaScript for spam protection. Please email
+      <a href="mailto:nathanael.ries@gmail.com" class="underline">nathanael.ries@gmail.com</a>
+      directly instead.
+    </p>
+  </noscript>
+
+  <div>
+    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      required
+      maxlength="200"
+      autocomplete="name"
+      class="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+    />
+  </div>
+  <div>
+    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      required
+      maxlength="200"
+      autocomplete="email"
+      class="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+    />
+  </div>
+  <div>
+    <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+    <textarea
+      id="message"
+      name="message"
+      rows="5"
+      required
+      maxlength="5000"
+      class="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+    ></textarea>
+  </div>
+
+  <div
+    id="turnstile-widget"
+    class="cf-turnstile"
+    data-sitekey={turnstileSiteKey}
+    data-theme="light"
+    data-size="flexible"
+  ></div>
+
+  <p
+    id="form-feedback"
+    class="hidden text-sm rounded p-3"
+    role="alert"
+    aria-live="polite"
+  ></p>
+
+  <button
+    id="contact-submit"
+    type="submit"
+    class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-300"
+  >
+    Send
+  </button>
+</form>
+
+<script
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+  async
+  defer
+></script>
+
+<script>
+  const form = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('contact-submit');
+  const feedback = document.getElementById('form-feedback');
+
+  function showFeedback(kind, text) {
+    if (!feedback) return;
+    feedback.textContent = text;
+    feedback.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'border-red-200', 'bg-green-50', 'text-green-700', 'border-green-200', 'border');
+    if (kind === 'error') {
+      feedback.classList.add('bg-red-50', 'text-red-700', 'border-red-200', 'border');
+    } else if (kind === 'success') {
+      feedback.classList.add('bg-green-50', 'text-green-700', 'border-green-200', 'border');
+    }
+  }
+
+  function getTurnstileToken() {
+    const input = form?.querySelector('input[name="cf-turnstile-response"]');
+    return input ? input.value : '';
+  }
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!(form instanceof HTMLFormElement) || !(submitBtn instanceof HTMLButtonElement)) return;
+
+    const data = new FormData(form);
+    const turnstileToken = getTurnstileToken();
+
+    if (!turnstileToken) {
+      showFeedback('error', 'Please complete the human verification.');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    showFeedback('clear', '');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.get('name'),
+          email: data.get('email'),
+          message: data.get('message'),
+          botField: data.get('bot-field'),
+          turnstileToken,
+        }),
+      });
+
+      const body = await res.json().catch(() => ({}));
+
+      if (res.ok && body?.success) {
+        window.location.href = '/thanks/';
+        return;
+      }
+
+      const msg = body?.error || 'Something went wrong. Please try again.';
+      showFeedback('error', msg);
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send';
+
+      if (typeof window.turnstile?.reset === 'function') {
+        window.turnstile.reset('#turnstile-widget');
+      }
+    } catch (err) {
+      console.error('Contact submit failed:', err);
+      showFeedback('error', 'Network error. Please try again in a moment.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send';
+    }
+  });
+</script>
