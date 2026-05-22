@@ -1,0 +1,22 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-gray-900 text-gray-400 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+      <p>&copy; {year} Nathanael Ries. Built with Astro + Tailwind, hosted on Netlify.</p>
+      <div class="flex items-center gap-6">
+        <a href="https://github.com/nathanaelries" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+          GitHub
+        </a>
+        <a href="mailto:nathanael.ries@gmail.com" class="hover:text-white transition-colors">
+          Email
+        </a>
+        <a href="/Nathanael_Ries_Resume.pdf" download class="hover:text-white transition-colors">
+          Résumé
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,59 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<MainLayout
+  title="Notebook | Nathanael Ries"
+  description="Writing on infrastructure, DevOps, eDiscovery, and the intersections."
+>
+  <section class="py-12 sm:py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header class="mb-10">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900">Notebook</h1>
+        <p class="mt-2 text-gray-600">
+          Writing on infrastructure, DevOps, eDiscovery, and the intersections.
+        </p>
+      </header>
+
+      {posts.length === 0 ? (
+        <p class="text-gray-700">No posts yet.</p>
+      ) : (
+        <ul class="space-y-8">
+          {posts.map((post) => (
+            <li class="group">
+              <a href={`/blog/${post.slug}/`} class="block">
+                <article class="bg-white rounded-lg border border-gray-200 group-hover:border-indigo-200 group-hover:shadow-md transition-all duration-300 overflow-hidden">
+                  {post.data.image && (
+                    <img
+                      src={post.data.image}
+                      alt={post.data.title}
+                      class="w-full h-48 object-cover"
+                      loading="lazy"
+                    />
+                  )}
+                  <div class="p-6">
+                    <p class="text-sm text-gray-500 mb-2">{fmt(post.data.date)}</p>
+                    <h2 class="text-2xl font-bold text-gray-900 group-hover:text-indigo-700 transition-colors mb-2">
+                      {post.data.title}
+                    </h2>
+                    <p class="text-gray-700">{post.data.excerpt}</p>
+                    <span class="mt-4 inline-block text-sm text-indigo-600 group-hover:text-indigo-800 font-medium">
+                      Read more &rarr;
+                    </span>
+                  </div>
+                </article>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+</MainLayout>

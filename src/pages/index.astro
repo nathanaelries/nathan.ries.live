@@ -1,0 +1,29 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Hero from '../components/Hero.astro';
+import Experience from '../components/Experience.astro';
+import Projects from '../components/Projects.astro';
+import Skills from '../components/Skills.astro';
+import Contact from '../components/Contact.astro';
+---
+
+<MainLayout>
+  <Hero />
+  <Experience />
+  <Projects />
+  <Skills />
+  <Contact />
+</MainLayout>
+
+<!--
+  Netlify Forms requires a static HTML version of every form to register it at
+  deploy time. Astro renders the visible form in Contact.astro the same way
+  (no JS), so this hidden copy is technically redundant - but we keep it as a
+  belt-and-suspenders safety net in case any future change makes the visible
+  form conditionally rendered.
+-->
+<form name="contact" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="name" />
+  <input type="email" name="email" />
+  <textarea name="message"></textarea>
+</form>
