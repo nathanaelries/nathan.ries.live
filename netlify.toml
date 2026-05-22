@@ -4,7 +4,7 @@
   functions = "netlify/functions"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "22"
 
 # No SPA-style catch-all redirect needed. Astro generates real HTML for every
 # route at build time; unknown URLs should return Netlify's 404 (better for SEO

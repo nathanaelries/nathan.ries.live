@@ -23,7 +23,7 @@ All build settings live in [`netlify.toml`](./netlify.toml) at the repo root.
 | --- | --- |
 | Build command | `npm run build` (runs `astro build`) |
 | Publish directory | `dist` |
-| Node version | `20` |
+| Node version | `22` |
 | SPA redirect | `/* -> /index.html (200)` (vestigial; Astro emits real HTML at every route) |
 | Asset cache | `1 year, immutable` for `/assets/*` and `/_astro/*` |
 | Security headers | `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` |
@@ -166,10 +166,6 @@ npm run preview        # serve dist/ on http://localhost:4321
 
 ## Things that have bitten me / will bite you
 
-- **Astro 6 + Node 24** has a bug in static-build server-asset rearrangement
-  ("Only URLs with a scheme in: file, data, and node are supported"). Stay on
-  Astro 5 until upstream fixes it. Pin in [`package.json`](./package.json) is
-  `^5`, which is correct.
 - **`dist/` was committed to git** historically. It is now in `.gitignore`.
   If you ever see it tracked again: `git rm -r --cached dist`.
 - **Tailwind purge** only sees class names that appear in string form in your

@@ -32,7 +32,7 @@ npm run build     # production build to dist/
 npm run preview   # serve dist/ locally
 ```
 
-Requires Node 20+.
+Requires Node 22+ (matches the version pinned in `netlify.toml`).
 
 ## Deployment
 
