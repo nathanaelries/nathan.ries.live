@@ -1,0 +1,67 @@
+name: Refresh disposable email blocklist
+
+on:
+  schedule:
+    # 2:17 AM UTC on the 1st of every month. Odd-minute schedule avoids the
+    # top-of-the-hour congestion on GitHub Actions runners.
+    - cron: '17 2 1 * *'
+  workflow_dispatch: # manual trigger from the Actions tab
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch upstream blocklist + allowlist
+        run: |
+          set -euo pipefail
+          UPSTREAM="https://raw.githubusercontent.com/disposable-email-domains/disposable-email-domains/main"
+          curl -fsSL "$UPSTREAM/disposable_email_blocklist.conf" -o /tmp/blocklist.conf
+          curl -fsSL "$UPSTREAM/allowlist.conf" -o /tmp/allowlist.conf
+          echo "Fetched $(wc -l < /tmp/blocklist.conf) blocklist lines"
+          echo "Fetched $(wc -l < /tmp/allowlist.conf) allowlist lines"
+
+      - name: Regenerate src/data/disposable-email-domains.js
+        run: |
+          node scripts/build-disposable-list.mjs \
+            /tmp/blocklist.conf \
+            /tmp/allowlist.conf \
+            src/data/disposable-email-domains.js
+
+      - name: Verify Astro build still passes with new list
+        run: |
+          npm ci
+          npm run build
+
+      - name: Open pull request if blocklist changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore: refresh disposable email blocklist'
+          title: 'Refresh disposable email blocklist'
+          body: |
+            Automated refresh of `src/data/disposable-email-domains.js` from upstream
+            [disposable-email-domains/disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains).
+
+            **Before merging**, glance at the diff:
+            - Large net additions are normal as upstream grows.
+            - Large net removals or unexpected legit-looking domains being added are worth investigating.
+            - Astro build passed in CI, so the file is at least syntactically valid.
+
+            If anything looks off, close this PR and the next run will recreate it.
+          branch: chore/refresh-disposable-blocklist
+          base: main
+          delete-branch: true
+          labels: |
+            automated
+            dependencies
