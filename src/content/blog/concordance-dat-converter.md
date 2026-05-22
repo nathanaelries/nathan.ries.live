@@ -1,6 +1,7 @@
 ---
 title: "The Load File Nobody Talks About: Building a Cross-Platform Excel-to-Concordance-DAT Converter"
 date: 2026-05-22
+image: /images/blog/concordance-dat.jpg
 excerpt: "Thirteen years of watching review teams fight load-file conversions, distilled into a small .NET CLI. Why the boring formats are where eDiscovery actually lives, and what building for them taught me about infrastructure."
 ---
 
