@@ -1,0 +1,55 @@
+---
+import SectionTitle from './SectionTitle.astro';
+import { projects } from '../data/projects.js';
+---
+
+<section id="projects" class="py-12 sm:py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionTitle>Projects</SectionTitle>
+    <p class="mt-4 text-center text-gray-600 max-w-2xl mx-auto">
+      A selection from{' '}
+      <a
+        href="https://github.com/nathanaelries"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-indigo-600 hover:text-indigo-800 underline"
+      >
+        github.com/nathanaelries
+      </a>
+      , weighted toward the intersection of infrastructure and eDiscovery.
+    </p>
+    <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {projects.map((p) => (
+        <a
+          href={p.repo}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex flex-col h-full bg-white rounded-lg shadow hover:shadow-lg border border-transparent hover:border-indigo-200 transition-all duration-300 overflow-hidden"
+        >
+          <div class="p-6 flex flex-col h-full">
+            <div class="flex items-start justify-between gap-3">
+              <h3 class="text-lg font-bold text-gray-900 group-hover:text-indigo-700 transition-colors">
+                {p.name}
+              </h3>
+              {p.featured && (
+                <span class="text-xs uppercase tracking-wider font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full whitespace-nowrap">
+                  Featured
+                </span>
+              )}
+            </div>
+            <p class="mt-2 text-sm font-medium text-indigo-700">{p.tagline}</p>
+            <p class="mt-3 text-gray-700 text-sm leading-relaxed flex-grow">{p.description}</p>
+            <ul class="mt-4 flex flex-wrap gap-2">
+              {p.stack.map((tag) => (
+                <li class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">{tag}</li>
+              ))}
+            </ul>
+            <span class="mt-4 text-sm text-indigo-600 group-hover:text-indigo-800 font-medium">
+              View on GitHub &rarr;
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

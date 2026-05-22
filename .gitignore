@@ -3,6 +3,7 @@ node_modules
 
 # Build output (Netlify rebuilds on deploy)
 dist
+.astro
 
 # Editor / tooling working directories
 .claude

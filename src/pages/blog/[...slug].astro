@@ -1,0 +1,49 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<MainLayout
+  title={`${post.data.title} | Nathanael Ries`}
+  description={post.data.excerpt}
+  image={post.data.image}
+>
+  <article class="py-12 sm:py-16 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <a href="/blog/" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">
+        &larr; All posts
+      </a>
+      <header class="mt-6 mb-8 border-b border-gray-200 pb-8">
+        <p class="text-sm text-gray-500 mb-2">{fmt(post.data.date)}</p>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">
+          {post.data.title}
+        </h1>
+        {post.data.image && (
+          <img
+            src={post.data.image}
+            alt={post.data.title}
+            class="mt-6 w-full rounded-lg"
+            loading="eager"
+          />
+        )}
+      </header>
+      <div class="prose prose-indigo prose-lg max-w-none">
+        <Content />
+      </div>
+    </div>
+  </article>
+</MainLayout>
